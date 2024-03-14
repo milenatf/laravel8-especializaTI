@@ -1,5 +1,9 @@
 <h1>Cadastrar novo post</h1>
 
+@if(session('message'))
+    <div class="message">{{ session('message') }}</div>
+@endif
+
 @if($errors->any())
     <ul>
     @foreach($errors->all() as $error)

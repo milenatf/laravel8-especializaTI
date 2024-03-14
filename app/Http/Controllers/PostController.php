@@ -24,7 +24,7 @@ class PostController extends Controller
     {
         $post = Post::create($request->all());
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('Post alterado com sucesso!');
     }
 
     public function show($id)
@@ -33,6 +33,30 @@ class PostController extends Controller
             return redirect()->route('posts.index');
 
         return view('admin.posts.show', compact('post'));
+    }
+
+    public function edit($id)
+    {
+        if(!$post = Post::find($id))
+            return redirect()->route('posts.edit')->with('message', 'Post não encontrado');
+
+        return view('admin.posts.edit', compact('post'));
+
+    }
+
+    public function update(StoreUpdatePostRequest $request, $id)
+    {
+        if(!$post = Post::find($id))
+            return redirect()->back()->with('message', 'Post não encontrado');
+            
+        $update = $post->update($request->all());
+
+        if(!$update)
+            return redirect()->back()->with('message', 'Não foi possível alterar o post.');
+
+        return redirect()->route('posts.index')->with('Post alterado com sucesso!');
+
+
     }
 
     public function destroy($id)
