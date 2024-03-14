@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::any('posts/search', [PostController::class, 'search'])->name('posts.search');
 Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
 Route::delete('posts/{idPost}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::put('posts/{idPost}', [PostController::class, 'update'])->name('posts.update');
