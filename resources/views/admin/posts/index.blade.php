@@ -10,6 +10,7 @@
 @foreach($posts as  $post)
     <h2>{{ $post->title }}</h2>
     <p>{{ $post->content }}</p>
-    <a href="{{route('posts.show', $post->id)}}">Detalhes</a>
+    <a href="{{route('posts.show', $post->id)}}">Detalhes</a> |
+    <a href="{{route('posts.edit', $post->id)}}">Editar</a>
     <hr>
 @endforeach
