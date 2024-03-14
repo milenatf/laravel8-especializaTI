@@ -10,7 +10,8 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::get();
+        $posts = Post::latest()->paginate(5); // latest() ordena dos mais antigos para os mais novos
+        // $posts = Post::orderBy('id', 'ASC')->paginate(5);
 
         return view('admin.posts.index', compact('posts'));
     }
