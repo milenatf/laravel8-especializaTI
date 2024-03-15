@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdatePostRequest;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -23,7 +24,23 @@ class PostController extends Controller
 
     public function store(StoreUpdatePostRequest $request)
     {
-        $post = Post::create($request->all());
+        $data = $request->all();
+
+        // Verifica se a imagem enviada é válida
+        if($request->image->isValid()) {
+
+            // Cria o nome da imagem a partir do título do post
+            $fileName = Str::slug($request->title, '-') . '.' . $request->image->getClientOriginalExtension();
+
+            // Grava a imagem no storage local
+            $image = $request->image->storeAs('posts', $fileName);
+
+            // Acrescentar o atributo "imagem" ao $request com o novo nome para armazenar no banco de dados
+            $data['image'] = $image;
+
+        }
+
+        Post::create($data);
 
         return redirect()->route('posts.index')->with('Post alterado com sucesso!');
     }
