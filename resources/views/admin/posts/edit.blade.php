@@ -13,12 +13,8 @@
 @endif
 
 <form action="{{ route('posts.update', $post->id) }}" method="POST">
-    @csrf
     @method('PUT')
 
-    <input type="text" name="title" id="title" value="{{ $post->title }}">
-    <textarea name="content" id="content" cols="30" rows="4">{{ $post->content }}</textarea>
-    
-    <button type="submit">Editar post {{ $post->title }}</button>
+    @include('admin.posts._includes.form')
 
 </form>
