@@ -15,3 +15,4 @@
 <textarea name="content" id="content" cols="30" rows="4">{{ $post->content ?? old('content') }}</textarea>
 
 <button type="submit">Enviar</button>
+

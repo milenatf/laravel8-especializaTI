@@ -1,20 +1,14 @@
-<h1>Alterar post <strong>{{ $post->title }}</strong></h1>
+@extends('admin.layouts.app')
 
-@if(session('message'))
-    <div class="message">{{ session('message') }}</div>
-@endif
+@section('title', 'Alterar Post')
 
-@if($errors->any())
-    <ul>
-    @foreach($errors->all() as $error)
-        <li>{{ $error }}</li>
-    @endforeach
-    </ul>
-@endif
+@section('content')
+    <h1>Alterar post <strong>{{ $post->title }}</strong></h1>
 
-<form action="{{ route('posts.update', $post->id) }}" method="POST">
-    @method('PUT')
+    <form action="{{ route('posts.update', $post->id) }}" method="POST">
+        @method('PUT')
 
-    @include('admin.posts._includes.form')
+        @include('admin.posts._includes.form')
+    </form>
 
-</form>
+@endsection
