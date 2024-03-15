@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -64,10 +65,30 @@ class PostController extends Controller
 
     public function update(StoreUpdatePostRequest $request, $id)
     {
+        $data = $request->all();
+
         if(!$post = Post::find($id))
             return redirect()->back()->with('message', 'Post não encontrado');
+
+        // Verifica se a imagem enviada é válida
+        if($request->image->isValid()) {
+
+            // Verifica se o arquivo existe
+            if( Storage::exists($post->image) )
+                Storage::delete($post->image); // Deleta o arquivo do storage, caso exista
+
+            // Cria o nome da imagem a partir do título do post
+            $fileName = Str::slug($request->title, '-') . '.' . $request->image->getClientOriginalExtension();
+
+            // Grava a imagem no storage local
+            $image = $request->image->storeAs('posts', $fileName);
+
+            // Acrescentar o atributo "imagem" ao $request com o novo nome para armazenar no banco de dados
+            $data['image'] = $image;
+
+        }
             
-        $update = $post->update($request->all());
+        $update = $post->update($data);
 
         if(!$update)
             return redirect()->back()->with('message', 'Não foi possível alterar o post.');
@@ -81,6 +102,10 @@ class PostController extends Controller
     {
         if(!$post = Post::find($id))
             return redirect()->back()->with('message', 'Post não encontrado.');
+
+        // Verifica se o arquivo existe
+        if(Storage::exists($post->image))
+            Storage::delete($post->image); // Deleta o arquivo do storage, caso exista
 
         if(!$post->delete())
             return redirect()->route('message', 'Não foi possível excluir o post.');
