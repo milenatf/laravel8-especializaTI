@@ -1,12 +1,17 @@
-<h1>Detalhes do post</h1>
+@extends('admin.layouts.app')
 
-<ul>
-    <li>{{ $post->title }}</li>
-    <li>{{ $post->content }}</li>
-</ul>
+@section('title', 'Detalhes do post')
+@section('content')
+    <h1>Detalhes do post</h1>
 
-<form action="{{ route('posts.destroy', $post->id) }}" method="POST">
-    @csrf
-    @method('DELETE')
-    <button type="submit">Deletar post {{ $post->title }}</button>
-</form>
+    <ul>
+        <li>{{ $post->title }}</li>
+        <li>{{ $post->content }}</li>
+    </ul>
+
+    <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Deletar post {{ $post->title }}</button>
+    </form>
+@endsection
