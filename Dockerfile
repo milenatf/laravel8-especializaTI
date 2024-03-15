@@ -9,10 +9,15 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    nodejs \
+    npm \
     zip \
-    unzip
+    unzip\
+    && docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
