@@ -70,8 +70,8 @@ class PostController extends Controller
         if(!$post = Post::find($id))
             return redirect()->back()->with('message', 'Post não encontrado');
 
-        // Verifica se a imagem enviada é válida
-        if($request->image->isValid()) {
+        // Verifica foi enviada no formulário de edição e se a imagem enviada é válida
+        if($request->image && $request->image->isValid()) {
 
             // Verifica se o arquivo existe
             if( Storage::exists($post->image) )
@@ -94,8 +94,6 @@ class PostController extends Controller
             return redirect()->back()->with('message', 'Não foi possível alterar o post.');
 
         return redirect()->route('posts.index')->with('Post alterado com sucesso!');
-
-
     }
 
     public function destroy($id)
